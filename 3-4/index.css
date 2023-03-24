@@ -1,0 +1,30 @@
+body{
+    background-color: grey;
+    height: 100vh;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.theme{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-bottom: 2px solid white;
+    width: 100%;
+}
+
+.form{
+    margin-top: 30px;
+}
+
+.submit{
+    text-align: center;
+}
+
+
