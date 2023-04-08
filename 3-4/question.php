@@ -17,19 +17,19 @@ $commands = ["join","select","insert","update"];
 <?php 
 foreach ($port_numbers as $value) {?>
 
-<input type="radio" name="port_numbers" value = $value>
- <?php echo $value;}?>
+<input type="radio" name="port_numbers" value = <?php echo $value; ?> >
+<?php echo $value;}?>
 <h2>②Webページを作成するための言語は？</h2>
 <!--③ 問題のradioボタンを「foreach」を使って作成する-->
 <?php
 foreach ($languages as $value) {?>
-<input type="radio" name="languages" value = $value>
+<input type="radio" name="languages" value = <?php echo $value; ?>>
 <?php echo $value; }?>
 <h2>③MySQLで情報を取得するためのコマンドは？</h2>
 <!--③ 問題のradioボタンを「foreach」を使って作成する-->
 <?php
 foreach ($commands as $value) {?>
-<input type="radio" name="commands" value = $value>
+<input type="radio" name="commands" value = <?php echo $value; ?>>
 <?php echo $value; }?>
 <!--問題の正解の変数と名前の変数を[answer.php]に送る-->
 <br/>
@@ -38,7 +38,7 @@ foreach ($commands as $value) {?>
 </div>
 <input type="hidden" name = answer1 value = 80>
 <input type="hidden" name = answer2 value = "HTML">
-<input type="hidden" name = answer3 value = "SELECT">
+<input type="hidden" name = answer3 value = "select">
 <input type="hidden" name = myname value = "<?php echo $my_name;?>" >
 </form>
 

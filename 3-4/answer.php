@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="reset.css">
+<link rel="stylesheet" href="index.css">
 
     
 
@@ -8,24 +8,24 @@
 $myname = $_POST['myname'];
 $port_number = $_POST['port_numbers'];
 $language = $_POST['languages'];
-$commnd = $_POST['commands'];
+$command = $_POST['commands'];
 $answer1 = $_POST['answer1'];
 $answer2 = $_POST['answer2'];
 $answer3 = $_POST['answer3'];
 
 //選択した回答と正解が一致していれば「正解！」、一致していなければ「残念・・・」と出力される処理を組んだ関数を作成する
-if ($port_number = $answer1){
+if ($port_number == $answer1){
     $response1 = "正解！";
 } else {
     $response1 = "残念・・・";
 }
 
-if($language = $answer2){
+if($language == $answer2){
     $response2 = "正解！";
 } else {
     $response2 = "残念・・・";
 }
-if($command = $answer3){
+if($command == $answer3){
     $response3 = "正解！";
 } else {
     $response3 = "残念・・・";
