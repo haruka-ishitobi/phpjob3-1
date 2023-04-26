@@ -1,77 +1,82 @@
 <?php
-
-// セッション開始
-session_start();
-include_once("dbinfo.php");
-
-// エラーメッセージ、登録完了メッセージの初期化
-$errorMessage = "";
-$signUpMessage = "";
+require_once("pdo.php");
+require_once("getData.php");
+$dbc = new Dbc();
 
 
+$UserData=$dbc->getUserData();
+$PostData=$dbc->getPostData();
 
-// ログインボタンが押された場合
-if (isset($_POST["signUp"])) {
-    // 1. ユーザIDの入力チェック
-    if (empty($_POST)) {  // 値が空のとき
-        $errorMessage = 'ユーザーIDが未入力です。';
-    } else if (empty($_POST["password"])) {
-        $errorMessage = 'パスワードが未入力です。';
-    } else if (empty($_POST["password2"])) {
-        $errorMessage = 'パスワードが未入力です。';
-    } else if ($_POST["password"] != $_POST["password2"]) {
-        $errorMessage = 'パスワードに誤りがあります。';}
 
-    }
-    if (!empty($_POST["username"]) && !empty($_POST["password"]) && !empty($_POST["password2"]) && $_POST["password"] === $_POST["password2"]) {
-        // 入力したユーザIDとパスワードを格納
-        $username = $_POST["username"];
-        $password = $_POST["password"];
+function setCategoryName($category_number) {
     
-        $dsn = sprintf('mysql: host=%s; dbname=%s; charset=utf8', $db['host'], $db['dbname']);
-
-        // 3. エラー処理
-        try {
-            $pdo = new PDO($dsn, $db['user'], $db['pass'], array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        
-            $stmt = $pdo->prepare("INSERT INTO users(name, password) VALUES (?, ?)");
-        
-            $stmt->execute(array($username , password_hash($password , PASSWORD_DEFAULT)));  // パスワードのハッシュ化を行う（今回は文字列のみなのでbindValue(変数の内容が変わらない)を使用せず、直接excuteに渡しても問題ない）
-            $userid = $pdo->lastinsertid();  // 登録した(DB側でauto_incrementした)IDを$useridに入れる
-        
-            $signUpMessage = '登録が完了しました。あなたの登録IDは ' . $userid . ' です。パスワードは ' . $password . ' です。';  // ログイン時に使用するIDとパスワード
-        } catch (PDOException $e) {
-            $errorMessage = 'データベースエラー';
-            // $e->getMessage() でエラー内容を参照可能（デバック時のみ表示）
-            // echo $e->getMessage();
-        }
+    if ($category_number == "1") {
+        return "食事";
+    } elseif ($category_number =="2") {
+        return "旅行";
+    } else{
+        return "その他";
     }
-          
-  
-?>        
-<!doctype html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>新規登録</title>
-    </head>
-    <body>
-        <h1>新規登録画面</h1>
-        <form id="loginForm" name="loginForm" action="" method="POST">
-            <fieldset>
-                <legend>新規登録フォーム</legend>
-                <div><font color="#ff0000"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></font></div>
-                <div><font color="#0000ff"><?php echo htmlspecialchars($signUpMessage, ENT_QUOTES); ?></font></div>
-                <label for="username">ユーザー名</label><input type="text" id="username" name="username" placeholder="ユーザー名を入力" value="<?php if (!empty($_POST["username"])) {
-    echo htmlspecialchars($_POST["username"], ENT_QUOTES);
-} ?>">
-                <br>
-                <label for="password">パスワード</label><input type="password" id="password" name="password" value="" placeholder="パスワードを入力">
-                <br>
-                <label for="password2">パスワード(確認用)</label><input type="password" id="password2" name="password2" value="" placeholder="再度パスワードを入力">
-                <br>
-                <input type="submit" id="signUp" name="signUp" value="登録">
-            </fieldset>
-        </form>
-    </body>
+}
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <header>
+        <div class="left">
+            <img src="1599315827_logo.png" class="logo">
+        </div>
+        <div class="right">
+        <?php foreach ($UserData as $column1): ?>
+            <div class="top">
+                
+                <p>ようこそ<?php echo $column1["last_name"],$column1["first_name"];?>さん</p>
+                </div>
+            <div class="bottom">
+                <p>最終ログイン日：<?php echo $column1["last_login"] ?></p>
+            <?php endforeach; ?>
+
+            </div>
+        </div>
+    </header>
+    <main>
+        <table>
+            <tr class="tr1">
+                <th>記事ID</th>
+                <th>タイトル</th>
+                <th>カテゴリ</th>
+                <th>本文</th>
+                <th>投稿日</th>
+            </tr>
+            <tbody>
+            <?php foreach ($PostData as $column2):?>
+
+            <tr class ="tr2">
+                <td><?php echo $column2["id"]; ?></td>
+                <td><?php echo $column2["title"]; ?></td>
+                <td><?php echo setCategoryName($column2["category_no"]); ?></td>
+                <td><?php echo $column2["comment"]; ?></td>
+                <td><?php echo $column2["created"]; ?></td>
+            </tr> 
+           <?php endforeach; ?>
+            </tbody>           
+
+        </table>
+    </main>
+    
+    <footer>
+        <p>Y&I group.inc</p>
+    </footer>
+</body>
 </html>
