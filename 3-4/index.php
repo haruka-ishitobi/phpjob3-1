@@ -1,7 +1,7 @@
 <?php
 require_once("pdo.php");
 require_once("getData.php");
-$dbc = new Dbc();
+$dbc = new getData();
 
 
 $UserData=$dbc->getUserData();
@@ -18,7 +18,6 @@ function setCategoryName($category_number) {
         return "その他";
     }
 }
-
 
 ?>
 
